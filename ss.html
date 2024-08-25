@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page</title>
+    <link rel="stylesheet" href="admin-styles.css">
+    <style>
+        /* Add your CSS here */
+        .schedule-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .schedule-content {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .schedule-left {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .schedule-right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-left: 20px;
+        }
+
+        .rectangular-box {
+            width: 100%;
+            max-width: 400px;
+            height: 200px;
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: var(--margin-top, 20px);
+            margin-left: var(--margin-left, 20px);
+            margin-right: var(--margin-right, 20px);
+        }
+
+        .add-content-button {
+            font-size: 50px;
+            color: #ccc;
+        }
+
+        .media-display img, .media-display video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .content-form {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; /* Align items to the left */
+            margin-top: 20px;
+        }
+
+        .content-form textarea {
+            width: var(--description-width, 100%);
+            max-width: 600px;
+            height: 100px;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .content-form button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            align-self: center; /* Center the button horizontally */
+        }
+
+        .vertical-divider {
+            width: 2px;
+            background-color: #ddd;
+            height: auto;
+            margin: 0 20px;
+        }
+
+        .carousel {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            overflow: hidden;
+            margin-right: 0;
+            margin-top: 20px;
+        }
+
+        .carousel-inner {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .carousel-item {
+            min-width: 100%;
+            box-sizing: border-box;
+        }
+
+        .carousel-item img {
+            width: 100%;
+            border-radius: 15px;
+            display: block;
+        }
+
+        .carousel-control {
+            position: absolute;
+            top: 50%;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: translateY(-50%);
+            z-index: 10;
+        }
+
+        .carousel-control.prev {
+            left: 10px;
+        }
+
+        .carousel-control.next {
+            right: 10px;
+        }
+
+        .calendar {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <header class="header-bar">
+        <div class="header-text">MSEC</div>
+    </header>
+
+    <div class="sidebar">
+        <div class="button-container">
+            <div class="box-button" onclick="showHome()">HOME</div>
+            <div class="box-button" onclick="showSchedule()">SCHEDULE</div>
+            <div class="box-button" onclick="showSyllabus()">SYLLABUS</div>
+            <div class="box-button" onclick="showRequests()">REQUESTS</div>
+        </div>
+        <div class="vertical-line"></div>
+    </div>
+
+    <div class="post-container" id="postContainer">
+        <div class="post">
+            <div class="post-header">
+                <img src="https://via.placeholder.com/40" alt="Profile" class="profile-img">
+                <div class="post-info">
+                    <strong>Username</strong>
+                    <span>@username</span>
+                </div>
+            </div>
+            <img src="https://via.placeholder.com/400x300.jpg" alt="Post Image" class="post-img">
+            <div class="post-footer">
+                <p>This is a description of the first post content. It can be quite detailed and informative.</p>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-header">
+                <img src="https://via.placeholder.com/40" alt="Profile" class="profile-img">
+                <div class="post-info">
+                    <strong>Username</strong>
+                    <span>@username</span>
+                </div>
+            </div>
+            <img src="https://via.placeholder.com/400x300.jpg" alt="Post Image" class="post-img">
+            <div class="post-footer">
+                <p>This is a description of the second post content. It can be quite detailed and informative.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="schedule-container" id="scheduleContainer">
+        <h1 class="schedule-heading">Schedule Page</h1>
+        <div class="schedule-content">
+            <div class="schedule-left">
+                <div class="rectangular-box" id="rectangularBox">
+                    <div class="add-content-button" id="addContentButton" onclick="document.getElementById('mediaUpload').click()">
+                        +
+                    </div>
+                    <div class="media-display" id="mediaDisplay"></div>
+                </div>
+            </div>
+            <div class="vertical-divider"></div>
+            <div class="schedule-right">
+                <div class="content-form" id="contentForm">
+                    <textarea id="description" placeholder="Enter description here..."></textarea>
+                    <button onclick="submitContent()">Submit</button>
+                </div>
+                <div id="carouselExample" class="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item">
+                            <img src="https://via.placeholder.com/200x200" alt="Image 1">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="https://via.placeholder.com/200x200" alt="Image 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="https://via.placeholder.com/300x200" alt="Image 3">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="https://via.placeholder.com/300x200" alt="Image 4">
+                        </div>
+                    </div>
+                    <button class="carousel-control prev" onclick="moveCarousel(-1)">&#10094;</button>
+                    <button class="carousel-control next" onclick="moveCarousel(1)">&#10095;</button>
+                </div>
+                <div id="calendar" class="calendar"></div>
+            </div>
+        </div>
+        <input type="file" id="mediaUpload" accept="image/*,video/*" onchange="displayMedia(event)" style="display:none;">
+    </div>
+
+    <script>
+        function showHome() {
+            document.getElementById('postContainer').style.display = 'block';
+            document.getElementById('scheduleContainer').style.display = 'none';
+        }
+
+        function showSchedule() {
+            document.getElementById('postContainer').style.display = 'none';
+            document.getElementById('scheduleContainer').style.display = 'block';
+        }
+
+        function showSyllabus() {
+            // Implement syllabus display
+        }
+
+        function showRequests() {
+            // Implement requests display
+        }
+
+        function displayMedia(event) {
+            const file = event.target.files[0];
+            const mediaDisplay = document.getElementById('mediaDisplay');
+            const addContentButton = document.getElementById('addContentButton');
+            
+            if (file) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    mediaDisplay.innerHTML = '';
+                    addContentButton.style.display = 'none'; // Hide the '+' button
+                    
+                    if (file.type.startsWith('image/')) {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.className = 'media-img';
+                       
